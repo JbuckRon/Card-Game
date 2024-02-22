@@ -3,25 +3,30 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class LoadScene : SceneManager
+public class LoadScene : MonoBehaviour
 {
     // Calls the different scenes based on the game mode selected
     // Will need events for when the button is clicked and it selects a certain gamemode
-    public delegate void ClickAction();
-    public static event ClickAction OnClicked();
 
-    enum GameMode{
-        MAIN_MENU,
-        WAR,
-        SLAP_JACK,
-        GO_FISH
-    }
+    //[SerializeField] private Button btn_War;
+    [SerializeField] private string gameMode;
 
-    public LoadScene()
+    void OnEnable()
     {
-       
+        GameManager.OnClicked += OnClickLoadScene;
+    }
+    
+    void OnDisable()
+    {
+        GameManager.OnClicked -= OnClickLoadScene;
     }
 
+    private void OnClickLoadScene()
+    {
+        GameManager.instance.LoadScene(gameMode);
+        
+    }
     
 }
