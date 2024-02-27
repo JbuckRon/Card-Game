@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CardHand : MonoBehaviour
 {
-    [SerializeField] private List<ScriptableObject> hand { get; set; }
+    public List<ScriptableObject> hand { get; set; }
 
     public void DrawCard(ScriptableObject card)
     {
