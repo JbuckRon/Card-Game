@@ -10,7 +10,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-   private CardDeck cardDeck;
+   public CardDeck cardDeck;
+ 
     public delegate void ClickAction();
     public static event ClickAction OnClicked;
     
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour
         if (instance == null) instance = this;
         else Destroy(gameObject);
 
+        if (cardDeck == null) Debug.LogError("CardDeck reference is not set in Gamemanager");
     }
 
     public void LoadScene(string gameMode)
@@ -28,13 +30,13 @@ public class GameManager : MonoBehaviour
     }
 
     // Used to set the image to the new deck
-    public Sprite CardDeck()
-    {
+    //public Sprite CardDeck()
+    //{
 
-        Sprite card = cardDeck.cardsImages[0]; // Get the top card from the shuffled deck
-        cardDeck.cardsImages.RemoveAt(0); // Remove the dealt card from the deck
-        return card;
-    }
+    //    Sprite card = cardDeck.cardsImages[0]; // Get the top card from the shuffled deck
+    //    cardDeck.cardsImages.RemoveAt(0); // Remove the dealt card from the deck
+    //    return card;
+    //}
 
 
 }
