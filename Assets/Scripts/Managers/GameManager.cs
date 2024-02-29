@@ -10,9 +10,10 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+   private CardDeck cardDeck;
     public delegate void ClickAction();
     public static event ClickAction OnClicked;
-
+    
 
     private void Awake()
     {
@@ -24,6 +25,15 @@ public class GameManager : MonoBehaviour
     public void LoadScene(string gameMode)
     {
         SceneManager.LoadScene(gameMode);
+    }
+
+    // Used to set the image to the new deck
+    public Sprite CardDeck()
+    {
+
+        Sprite card = cardDeck.cardsImages[0]; // Get the top card from the shuffled deck
+        cardDeck.cardsImages.RemoveAt(0); // Remove the dealt card from the deck
+        return card;
     }
 
 
