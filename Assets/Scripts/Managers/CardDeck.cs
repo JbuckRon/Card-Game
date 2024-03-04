@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,9 +9,13 @@ public class CardDeck : MonoBehaviour
     // Will need a List for the images
     private List<Sprite> cardsImages = new List<Sprite>();
     private string folderPath = "deck-of-cards/Black Cards";// Path to set cards dynamically
+
+    private int currentCardIndex = 0;
+
     private void Start()
     {
         LoadCardSprites();
+        ShuffleDeck();
 
     }
 
@@ -23,7 +28,8 @@ public class CardDeck : MonoBehaviour
         Sprite[] cardSprites = Resources.LoadAll<Sprite>(folderPath);
         foreach (Sprite sprite in cardSprites)
         {
-            Debug.Log("Sprite Name " + sprite.name);
+            // TEST
+            //Debug.Log("Sprite Name " + sprite.name);
             cardsImages.Add(sprite);
         }
     }
@@ -31,34 +37,43 @@ public class CardDeck : MonoBehaviour
     // Shuffle Cards
     public void ShuffleDeck()
     {
-        
+
         System.Random rand = new System.Random();
         int numberOfCards = cardsImages.Count; // Amount of cards
-        Debug.Log("Test");
 
-        while(numberOfCards > 1)
+        while (numberOfCards > 1)
         {
             numberOfCards--; //Removing cards
             int randomCard = rand.Next(numberOfCards);
             Sprite valueOfCard = cardsImages[randomCard];
             cardsImages[randomCard] = cardsImages[numberOfCards];
             cardsImages[numberOfCards] = valueOfCard;
-            Debug.Log("Card Name: " + cardsImages[randomCard].name);    
-            
+            // TEST
+            //Debug.Log("Card Name: " + cardsImages[randomCard].name);    
+
         }
-           
+
     }
 
     // 
     public Sprite GetCurrentCard()
     {
-        if (cardsImages.Count > 0) return cardsImages[0];
+        if (cardsImages.Count > 0) return cardsImages[currentCardIndex];
         else return null;
-       
+
     }
 
     public void RemoveCurrentCard()
     {
-        if(cardsImages.Count > 0) cardsImages.RemoveAt(0);
+        if (cardsImages.Count > 0) cardsImages.RemoveAt(0);
     }
+
+    public void CurrentImage(Image currentCardImage)
+    {
+        currentCardIndex++;
+        if (currentCardIndex >= cardsImages.Count) currentCardIndex = 0;
+        if (currentCardIndex != null) currentCardImage.sprite = GetCurrentCard();
+    }
+
+
 }

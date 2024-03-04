@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,18 +11,22 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-   public CardDeck cardDeck;
- 
+    [SerializeField] public CardDeck[] cardDeck = new CardDeck[2];
+
     public delegate void ClickAction();
     public static event ClickAction OnClicked;
-    
+
 
     private void Awake()
     {
         if (instance == null) instance = this;
         else Destroy(gameObject);
 
-        if (cardDeck == null) Debug.LogError("CardDeck reference is not set in Gamemanager");
+        foreach (var plyrCardDeck in cardDeck)
+        {
+            if (plyrCardDeck == null) Debug.LogError("CardDeck reference is not set in Gamemanager");
+
+        }
     }
 
     public void LoadScene(string gameMode)
@@ -29,14 +34,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(gameMode);
     }
 
-    // Used to set the image to the new deck
-    //public Sprite CardDeck()
-    //{
 
-    //    Sprite card = cardDeck.cardsImages[0]; // Get the top card from the shuffled deck
-    //    cardDeck.cardsImages.RemoveAt(0); // Remove the dealt card from the deck
-    //    return card;
-    //}
 
 
 }
