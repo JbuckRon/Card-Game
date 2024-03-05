@@ -13,6 +13,12 @@ public class SlapJack : MonoBehaviour
     int playerOne;
     int playerTwo;
     [SerializeField] private GameObject slapButton;
+    List<Sprite> pile = new List<Sprite>();
+
+    private void Start()
+    {
+        Flip();
+    }
 
     private void Update()
     {
@@ -38,6 +44,7 @@ public class SlapJack : MonoBehaviour
         gameManager.cardDeck[0].ShuffleDeck();
         topCard = gameManager.cardDeck[0].GetCurrentCard();
         gameObject.GetComponent<SpriteRenderer>().sprite = topCard;
+        pile.Add(topCard);
         points += 1;
 
         CheckSlappable();
@@ -45,10 +52,15 @@ public class SlapJack : MonoBehaviour
 
     public void CheckSlappable()
     {
-        if (bottomCard == topCard || topCard.name.ToCharArray()[0].Equals('J'))
+        if (bottomCard.name.ToCharArray()[0].Equals(topCard.name.ToCharArray()[0]) || topCard.name.ToCharArray()[0].Equals('J'))
         {
             slappable = true;
             slapButton.SetActive(true);
+        }
+        else
+        {
+            slappable= false;
+            slapButton.SetActive(false);
         }
     }
 
@@ -62,7 +74,12 @@ public class SlapJack : MonoBehaviour
             slappable = false;
             CheckWin();
         }
+        foreach(Sprite card in pile)
+        {
+            gameManager.cardDeck[0].cardsImages.Remove(card);
+        }
 
+        Flip();
         slapButton.SetActive(false);
     }
 
