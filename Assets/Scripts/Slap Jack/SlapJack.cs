@@ -12,15 +12,32 @@ public class SlapJack : MonoBehaviour
     bool slappable;
     int playerOne;
     int playerTwo;
+    [SerializeField] private GameObject slapButton;
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+
+            if (hit.collider != null && hit.collider.name.Equals("slapjack"))
+            {
+                Flip();
+            }
+            else if (hit.collider.name.Equals("SlapButton"))
+            {
+                Slapped();
+            }
+        }
+    }
 
     public void Flip()
     {
         bottomCard = gameManager.cardDeck[0].GetCurrentCard();
-        gameManager.cardDeck[0].RemoveCurrentCard();
         gameManager.cardDeck[0].ShuffleDeck();
         topCard = gameManager.cardDeck[0].GetCurrentCard();
-        gameManager.cardDeck[0].RemoveCurrentCard();
+        gameObject.GetComponent<SpriteRenderer>().sprite = topCard;
         points += 1;
 
         CheckSlappable();
@@ -28,11 +45,14 @@ public class SlapJack : MonoBehaviour
 
     public void CheckSlappable()
     {
-        if(bottomCard == topCard)
+        if (bottomCard == topCard || topCard.name.ToCharArray()[0].Equals('J'))
+        {
             slappable = true;
+            slapButton.SetActive(true);
+        }
     }
 
-    public void Slapped(CardHand hand)
+    public void Slapped()
     {
         if (slappable)
         {
@@ -42,6 +62,8 @@ public class SlapJack : MonoBehaviour
             slappable = false;
             CheckWin();
         }
+
+        slapButton.SetActive(false);
     }
 
     private void CheckWin()
