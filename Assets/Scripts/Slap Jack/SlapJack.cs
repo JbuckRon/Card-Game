@@ -17,7 +17,7 @@ public class SlapJack : MonoBehaviour
 
     private void Start()
     {
-        Flip();
+        //Flip();
     }
 
     private void Update()
