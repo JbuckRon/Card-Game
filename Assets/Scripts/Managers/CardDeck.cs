@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class CardDeck : MonoBehaviour
 {
     // Will need a List for the images
-    private List<Sprite> cardsImages = new List<Sprite>();
+    public List<Sprite> cardsImages = new List<Sprite>();
     private string folderPath = "deck-of-cards/Black Cards";// Path to set cards dynamically
 
     private int currentCardIndex = 0;

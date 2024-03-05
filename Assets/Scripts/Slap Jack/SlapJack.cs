@@ -1,42 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SlapJack : MonoBehaviour
 {
-    [SerializeField] private List<ScriptableObject> deck = new List<ScriptableObject>();
-    [SerializeField] private List<ScriptableObject> pile = new List<ScriptableObject>();
-    [SerializeField] private CardHand player1;
-    [SerializeField] private CardHand player2;
-    string winner;
+    [SerializeField] private GameManager gameManager;
+    Sprite topCard;
+    Sprite bottomCard;
+    int points;
     bool slappable;
+    int playerOne;
+    int playerTwo;
 
 
     public void Flip()
     {
-        ScriptableObject card = deck[Random.Range(0, deck.Count-1)];
-        deck.Remove(card);
-        pile.Add(card);
+        bottomCard = gameManager.cardDeck[0].GetCurrentCard();
+        gameManager.cardDeck[0].RemoveCurrentCard();
+        gameManager.cardDeck[0].ShuffleDeck();
+        topCard = gameManager.cardDeck[0].GetCurrentCard();
+        gameManager.cardDeck[0].RemoveCurrentCard();
+        points += 1;
+
         CheckSlappable();
     }
 
     public void CheckSlappable()
     {
-        if (pile[pile.Count - 1].Equals(pile[pile.Count-2]))
-        {
+        if(bottomCard == topCard)
             slappable = true;
-        }
     }
 
     public void Slapped(CardHand hand)
     {
         if (slappable)
         {
-            foreach (ScriptableObject card in pile)
-            {
-                hand.DrawCard(card);
-            }
-            pile.Clear();
+            playerOne += points;
+            points = 0;
+            
             slappable = false;
             CheckWin();
         }
@@ -44,15 +46,15 @@ public class SlapJack : MonoBehaviour
 
     private void CheckWin()
     {
-        if(deck.Count <= 0)
+        if (gameManager.cardDeck[0].cardsImages.Count <= 0)
         {
-            if (player1.hand.Count > player2.hand.Count)
+            if(playerOne > playerTwo)
             {
-                winner = "player 1";
+                Debug.Log("Player 1 wins!!!");
             }
             else
             {
-                winner = "player 2";
+                Debug.Log("Player 2 wins!!!");
             }
         }
     }
